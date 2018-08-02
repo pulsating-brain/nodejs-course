@@ -1,6 +1,7 @@
 // Dependency
 var http = require('http');
 var url = require('url');
+var StringDecoder = require('string_decoder').StringDecoder;
 
 var server = http.createServer(function(req,res){
   // get the url and parse it
@@ -19,12 +20,21 @@ var server = http.createServer(function(req,res){
   // get the headers as a object
   var headers = req.headers;
 
-  // send the response
-  res.end('Hello World\n');
+  // get the payload, if any
+  var decoder = new StringDecoder('utf-8');
+  var buffer = '';
+  req.on('data', function(data){
+    buffer += decoder.write(data);
+  });
+  req.on('end', function(){
+    buffer += decoder.end();
 
-  // log the request path
-  console.log('Request received with headers: ',headers);
+    // send the response
+    res.end('Hello World\n');
 
+    // log the request path
+    console.log('Request received with payload: \n',buffer);
+  });
 });
 
 server.listen(3000,function(){
