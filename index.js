@@ -122,9 +122,9 @@ var unifiedServer = function(req,res){
 var handlers = {};
 
 // Sample handler
-handlers.sample = function(data,callback){
+handlers.hello = function(data,callback){
   // Callback a http status code, and a payload object
-  callback(406,{'name' : 'sample handler'});
+  callback(406,{'message' : 'Hello back at you! Welcome to my first Node.js app'});
 };
 
 // Not found handler
@@ -140,5 +140,5 @@ handlers.notFound = function(data,callback){
 
 // Define a request router
 var router = {
-  'sample' : handlers.sample
+  'hello' : handlers.hello
 };
